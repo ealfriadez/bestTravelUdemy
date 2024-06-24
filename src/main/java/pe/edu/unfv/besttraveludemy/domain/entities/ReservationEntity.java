@@ -19,7 +19,11 @@ import java.util.UUID;
 @Builder
 public class ReservationEntity implements Serializable {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@Id
     private UUID id;
     @Column(name = "date_reservation")
     private LocalDateTime dateTimeReservation;

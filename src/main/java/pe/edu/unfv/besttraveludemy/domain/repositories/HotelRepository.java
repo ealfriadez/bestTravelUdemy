@@ -1,11 +1,13 @@
 package pe.edu.unfv.besttraveludemy.domain.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import pe.edu.unfv.besttraveludemy.domain.entities.FlyEntity;
-import pe.edu.unfv.besttraveludemy.domain.entities.HotelEntity;
-
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import pe.edu.unfv.besttraveludemy.domain.entities.HotelEntity;
 
 public interface HotelRepository extends JpaRepository<HotelEntity, Long> {
 
@@ -14,4 +16,6 @@ public interface HotelRepository extends JpaRepository<HotelEntity, Long> {
     Set<HotelEntity> findByPriceIsBetween(BigDecimal min, BigDecimal max);
 
     Set<HotelEntity> findByRatingGreaterThan(Integer rating);
+    
+    Optional<HotelEntity> findByReservationId(UUID id);
 }
