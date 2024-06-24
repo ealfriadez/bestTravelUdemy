@@ -1,10 +1,7 @@
 package pe.edu.unfv.besttraveludemy.domain.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import pe.edu.unfv.besttraveludemy.util.AeroLine;
 
 import java.io.Serializable;
@@ -32,6 +29,8 @@ public class FlyEntity implements Serializable {
     private String destinyName;
     @Enumerated(EnumType.STRING)
     private AeroLine aeroLine;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER,
