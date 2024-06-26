@@ -13,7 +13,11 @@ import java.util.Set;
 @Builder
 public class CustomerEntity implements Serializable {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@Id
     private String dni;
     @Column(length = 50)
     private String fullName;
