@@ -48,7 +48,7 @@ public class TicketService implements ITicketService{
 		
 		var ticketPersisted = this.ticketRepository.save(ticketToPersist);
 		
-		log.info("Ticket saved with od: {}", ticketPersisted.getId());
+		log.info("Ticket saved with id: {}", ticketPersisted.getId());
 		
 		return this.entityToResponse(ticketPersisted);
 	}
@@ -62,13 +62,28 @@ public class TicketService implements ITicketService{
 
 	@Override
 	public TicketResponse update(TicketRequest request, UUID id) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		var ticketToUpdate = ticketRepository.findById(id).orElseThrow();
+		var fly = flyRepository.findById(request.getIdFly()).orElseThrow();
+		
+		ticketToUpdate.setFly(fly);
+		ticketToUpdate.setPrice(BigDecimal.valueOf(0.25));
+		ticketToUpdate.setDepartureDate(LocalDateTime.now());
+		ticketToUpdate.setArrivalDate(LocalDateTime.now());
+		
+		var ticketUpdated = this.ticketRepository.save(ticketToUpdate);
+		
+		log.info("Ticket updated with id: {}", ticketUpdated.getId());
+		
+		return this.entityToResponse(ticketToUpdate);
 	}
 
 	@Override
 	public void delete(UUID id) {
-		// TODO Auto-generated method stub		
+
+		var ticketToDelete = ticketRepository.findById(id).orElseThrow();
+		this.ticketRepository.delete(ticketToDelete);
+		
 	}
 	
 	private TicketResponse entityToResponse(TicketEntity entity) {
