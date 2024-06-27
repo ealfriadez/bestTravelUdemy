@@ -55,8 +55,9 @@ public class TicketService implements ITicketService{
 
 	@Override
 	public TicketResponse read(UUID id) {
-		// TODO Auto-generated method stub
-		return null;
+
+		var ticketFromDB = this.ticketRepository.findById(id).orElseThrow();
+		return this.entityToResponse(ticketFromDB);
 	}
 
 	@Override
