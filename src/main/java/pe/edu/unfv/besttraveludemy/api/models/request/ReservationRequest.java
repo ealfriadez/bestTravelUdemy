@@ -17,4 +17,5 @@ public class ReservationRequest implements Serializable{/**
 	private static final long serialVersionUID = 1L;
 	private String idClient;
 	private Long idHotel;
+	private Integer totalDays;
 }
