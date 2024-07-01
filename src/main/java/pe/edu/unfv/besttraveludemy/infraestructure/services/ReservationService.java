@@ -1,24 +1,24 @@
 package pe.edu.unfv.besttraveludemy.infraestructure.services;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import pe.edu.unfv.besttraveludemy.api.models.request.ReservationRequest;
-import pe.edu.unfv.besttraveludemy.api.models.response.FlyResponse;
-import pe.edu.unfv.besttraveludemy.api.models.response.HotelResponse;
-import pe.edu.unfv.besttraveludemy.api.models.response.ReservationResponse;
-import pe.edu.unfv.besttraveludemy.api.models.response.TicketResponse;
-import pe.edu.unfv.besttraveludemy.domain.entities.ReservationEntity;
-import pe.edu.unfv.besttraveludemy.domain.entities.TicketEntity;
-import pe.edu.unfv.besttraveludemy.domain.repositories.*;
-import pe.edu.unfv.besttraveludemy.infraestructure.abastract_services.IReservationService;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import pe.edu.unfv.besttraveludemy.api.models.request.ReservationRequest;
+import pe.edu.unfv.besttraveludemy.api.models.response.HotelResponse;
+import pe.edu.unfv.besttraveludemy.api.models.response.ReservationResponse;
+import pe.edu.unfv.besttraveludemy.domain.entities.ReservationEntity;
+import pe.edu.unfv.besttraveludemy.domain.repositories.CustomerRepository;
+import pe.edu.unfv.besttraveludemy.domain.repositories.HotelRepository;
+import pe.edu.unfv.besttraveludemy.domain.repositories.ReservationRepository;
+import pe.edu.unfv.besttraveludemy.infraestructure.abastract_services.IReservationService;
 
 @Transactional
 @Service
@@ -44,27 +44,45 @@ public class ReservationService implements IReservationService {
                 .dateTimeReservation(LocalDateTime.now())
                 .dateStart(LocalDate.now())
                 .dateEnd(LocalDate.now().plusDays(request.getTotalDays()))
-                .price(hotel.getPrice().add(hotel.getPrice().multiply(charges_price_percentage)))
+                .price((hotel.getPrice().add(hotel.getPrice().multiply(charges_price_percentage))).multiply(BigDecimal.valueOf(request.getTotalDays())))
                 .build();
 
         var reservationPersisted = reservationRepository.save(reservationToPersist);
+        
+        log.info("Reservation saved with id: {}", reservationPersisted.getId());
 
         return this.entityToResponse(reservationPersisted);
     }
 
     @Override
     public ReservationResponse read(UUID uuid) {
-        return null;
+        
+    	var reservationFromDB = this.reservationRepository.findById(uuid).orElseThrow();
+    	return this.entityToResponse(reservationFromDB);
     }
 
     @Override
     public ReservationResponse update(ReservationRequest request, UUID uuid) {
-        return null;
+    	 var hotel = this.hotelRepository.findById(request.getIdHotel()).orElseThrow();         
+
+         var reservationToUpdate = this.reservationRepository.findById(uuid).orElseThrow();
+         
+         reservationToUpdate.setHotel(hotel);
+         reservationToUpdate.setTotalDays(request.getTotalDays());
+         reservationToUpdate.setDateTimeReservation(LocalDateTime.now());
+         reservationToUpdate.setDateStart(LocalDate.now());
+         reservationToUpdate.setDateEnd(LocalDate.now().plusDays(request.getTotalDays()));
+         reservationToUpdate.setPrice((hotel.getPrice().add(hotel.getPrice().multiply(charges_price_percentage))).multiply(BigDecimal.valueOf(request.getTotalDays())));
+         
+         log.info("Reservation saved with id: {}", reservationToUpdate.getId());
+
+         return this.entityToResponse(reservationToUpdate);
     }
 
     @Override
     public void delete(UUID uuid) {
-
+    	var reservationToDelete = reservationRepository.findById(uuid).orElseThrow();
+    	this.reservationRepository.delete(reservationToDelete);
     }
 
     private ReservationResponse entityToResponse(ReservationEntity entity) {
