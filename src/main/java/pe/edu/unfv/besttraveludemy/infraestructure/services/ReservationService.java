@@ -74,9 +74,11 @@ public class ReservationService implements IReservationService {
          reservationToUpdate.setDateEnd(LocalDate.now().plusDays(request.getTotalDays()));
          reservationToUpdate.setPrice((hotel.getPrice().add(hotel.getPrice().multiply(charges_price_percentage))).multiply(BigDecimal.valueOf(request.getTotalDays())));
          
-         log.info("Reservation saved with id: {}", reservationToUpdate.getId());
+         var reservationUpdate = this.reservationRepository.save(reservationToUpdate);
+         
+         log.info("Reservation update with id: {}", reservationUpdate.getId());
 
-         return this.entityToResponse(reservationToUpdate);
+         return this.entityToResponse(reservationUpdate);
     }
 
     @Override
@@ -93,6 +95,11 @@ public class ReservationService implements IReservationService {
         BeanUtils.copyProperties(entity.getHotel(), hotelResponse);
         response.setHotel(hotelResponse);
         return response;
+    }
+    
+    public BigDecimal findPrice(Long hotelId) {
+    	var hotel = this.hotelRepository.findById(hotelId).orElseThrow();
+    	return hotel.getPrice().add(hotel.getPrice().multiply(charges_price_percentage));
     }
 
     private static final BigDecimal charges_price_percentage = BigDecimal.valueOf(0.20);
