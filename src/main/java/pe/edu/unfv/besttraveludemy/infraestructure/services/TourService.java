@@ -60,14 +60,18 @@ public class TourService implements ITourService{
 
 	@Override
 	public TourResponse read(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		var tourFromDb = this.tourRepository.findById(id).orElseThrow();
+		return TourResponse.builder()
+				.reservationsIds(tourFromDb.getReservations().stream().map(ReservationEntity::getId).collect(Collectors.toSet()))
+				.ticketIds(tourFromDb.getTickets().stream().map(TicketEntity::getId).collect(Collectors.toSet()))
+				.id(tourFromDb.getId())
+				.build();
 	}
 
 	@Override
 	public void delete(Long id) {
-		// TODO Auto-generated method stub
-		
+		var tourDelete = this.tourRepository.findById(id).orElseThrow();
+		this.tourRepository.delete(tourDelete);
 	}
 
 	@Override
