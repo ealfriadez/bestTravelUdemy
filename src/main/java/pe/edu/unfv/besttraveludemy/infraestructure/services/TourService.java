@@ -51,6 +51,9 @@ public class TourService implements ITourService{
 				.build();
 		
 		var tourSaved = this.tourRepository.save(tourToSave);
+		
+		log.info("Tour saved with id: {}", tourSaved.getId());
+		
 		return TourResponse.builder()
 				.reservationsIds(tourSaved.getReservations().stream().map(ReservationEntity::getId).collect(Collectors.toSet()))
 				.ticketIds(tourSaved.getTickets().stream().map(TicketEntity::getId).collect(Collectors.toSet()))
@@ -75,19 +78,24 @@ public class TourService implements ITourService{
 	}
 
 	@Override
-	public void deleteTicket(UUID ticketId, Long tourId) {
-		// TODO Auto-generated method stub
-		
+	public void deleteTicket(Long tourId, UUID ticketId) {
+		var tourUpdate = this.tourRepository.findById(tourId).orElseThrow();
+		tourUpdate.removeTicket(ticketId);
+		this.tourRepository.save(tourUpdate);
 	}
 
 	@Override
-	public UUID addTicket(Long flyId, Long tourId) {
-		// TODO Auto-generated method stub
-		return null;
+	public UUID addTicket(Long tourId, Long flyId) {
+		var tourUpdate = this.tourRepository.findById(tourId).orElseThrow();
+		var fly = this.flyRepository.findById(flyId).orElseThrow();
+		var ticket = this.tourHelper.createTicket(fly, tourUpdate.getCustomer());
+		tourUpdate.addTicket(ticket);
+		this.tourRepository.save(tourUpdate);		
+		return ticket.getId();
 	}
 
 	@Override
-	public void removeReservation(UUID reservationId, Long tourId) {
+	public void removeReservation(Long tourId, UUID reservationId) {
 		// TODO Auto-generated method stub
 		
 	}

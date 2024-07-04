@@ -15,6 +15,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreRemove;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -58,31 +60,25 @@ public class TourEntity implements Serializable {
     @JoinColumn(name = "id_customer")
     private CustomerEntity customer;
     
-    public void addTicket(TicketEntity ticket) {
-    	if (Objects.isNull(this.tickets)) this.tickets = new HashSet<>();
-    	this.tickets.add(ticket);
+    @PrePersist
+    @PreRemove
+    public void updateFk() {
+    	this.tickets.forEach(ticket -> ticket.setTour(this));
+    	this.reservations.forEach(reservations -> reservations.setTour(this));
     }
     
     public void removeTicket(UUID id) {
-    	if (Objects.isNull(this.tickets)) this.tickets = new HashSet<>();
-    	this.tickets.removeIf(ticket -> ticket.getId().equals(id));
-    }
+    	this.tickets.forEach(ticket -> {
+    		if (ticket.getId().equals(id)) {
+				ticket.setTour(null);
+			}
+    	});
+    } 
     
-    public void updateTickets() {
-    	this.tickets.forEach(ticket -> ticket.setTour(this));
-    }
-    
-    public void addReservations(ReservationEntity reservationEntity) {
-    	if (Objects.isNull(this.reservations)) this.reservations = new HashSet<>();
-    	this.reservations.add(reservationEntity);
-    }
-    
-    public void removeReservations(UUID idReservation) {
-    	if (Objects.isNull(this.reservations)) this.reservations = new HashSet<>();
-    	this.reservations.removeIf(ticket -> ticket.getId().equals(idReservation));
-    }
-    
-    public void updateReservations() {
-    	this.reservations.forEach(ticket -> ticket.setTour(this));
+    public void addTicket(TicketEntity ticket) {
+    	if (Objects.isNull(this.tickets))this.tickets = new HashSet<>(); 
+		this.tickets.add(ticket);
+		this.tickets.forEach(t -> t.setTour(this));
+		
     }
 }

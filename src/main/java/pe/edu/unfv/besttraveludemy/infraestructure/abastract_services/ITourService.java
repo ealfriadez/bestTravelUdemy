@@ -7,8 +7,8 @@ import pe.edu.unfv.besttraveludemy.api.models.response.TourResponse;
 
 public interface ITourService extends SimpleCrudService<TourRequest, TourResponse, Long>{
 
-	void deleteTicket(UUID ticketId, Long tourId);
+	void deleteTicket(Long tourId, UUID ticketId);
 	UUID addTicket(Long flyId, Long tourId);
-	void removeReservation(UUID reservationId, Long tourId);
+	void removeReservation(Long tourId, UUID reservationId);
 	UUID addReservation(Long reservationId, Long tourId);
 }
