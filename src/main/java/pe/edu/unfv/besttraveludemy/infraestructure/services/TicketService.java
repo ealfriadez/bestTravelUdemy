@@ -18,6 +18,7 @@ import pe.edu.unfv.besttraveludemy.domain.repositories.CustomerRepository;
 import pe.edu.unfv.besttraveludemy.domain.repositories.FlyRepository;
 import pe.edu.unfv.besttraveludemy.domain.repositories.TicketRepository;
 import pe.edu.unfv.besttraveludemy.infraestructure.abastract_services.ITicketService;
+import pe.edu.unfv.besttraveludemy.infraestructure.helper.CustomerHelper;
 import pe.edu.unfv.besttraveludemy.util.BestTravelUtil;
 
 @Transactional
@@ -29,6 +30,7 @@ public class TicketService implements ITicketService{
 	private final FlyRepository flyRepository;
 	private final CustomerRepository customerRepository;
 	private final TicketRepository ticketRepository;
+	private final CustomerHelper customerHelper;
 
 	@Override
 	public TicketResponse create(TicketRequest request) {
@@ -47,6 +49,8 @@ public class TicketService implements ITicketService{
 				.build();
 		
 		var ticketPersisted = this.ticketRepository.save(ticketToPersist);
+		
+		this.customerHelper.incrase(customer.getDni(), TicketService.class);
 		
 		log.info("Ticket saved with id: {}", ticketPersisted.getId());
 		

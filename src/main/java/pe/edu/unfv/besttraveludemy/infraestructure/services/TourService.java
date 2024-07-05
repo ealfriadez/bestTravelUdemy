@@ -22,6 +22,7 @@ import pe.edu.unfv.besttraveludemy.domain.repositories.FlyRepository;
 import pe.edu.unfv.besttraveludemy.domain.repositories.HotelRepository;
 import pe.edu.unfv.besttraveludemy.domain.repositories.TourRepository;
 import pe.edu.unfv.besttraveludemy.infraestructure.abastract_services.ITourService;
+import pe.edu.unfv.besttraveludemy.infraestructure.helper.CustomerHelper;
 import pe.edu.unfv.besttraveludemy.infraestructure.helper.TourHelper;
 
 @Transactional
@@ -35,6 +36,7 @@ public class TourService implements ITourService{
 	private final CustomerRepository customerRepository;
 	private final HotelRepository hotelRepository;
 	private final TourHelper tourHelper;
+	private final CustomerHelper customerHelper;
 	
 	@Override
 	public TourResponse create(TourRequest request) {
@@ -51,6 +53,8 @@ public class TourService implements ITourService{
 				.build();
 		
 		var tourSaved = this.tourRepository.save(tourToSave);
+		
+		this.customerHelper.incrase(customer.getDni(), TourService.class);
 		
 		log.info("Tour saved with id: {}", tourSaved.getId());
 		

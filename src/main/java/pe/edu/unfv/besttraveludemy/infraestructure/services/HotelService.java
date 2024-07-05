@@ -19,7 +19,7 @@ import pe.edu.unfv.besttraveludemy.domain.repositories.HotelRepository;
 import pe.edu.unfv.besttraveludemy.infraestructure.abastract_services.IHotelService;
 import pe.edu.unfv.besttraveludemy.util.SortType;
 
-@Transactional
+@Transactional(readOnly = true)
 @Service
 @Slf4j
 @AllArgsConstructor

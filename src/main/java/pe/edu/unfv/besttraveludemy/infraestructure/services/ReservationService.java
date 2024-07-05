@@ -19,6 +19,7 @@ import pe.edu.unfv.besttraveludemy.domain.repositories.CustomerRepository;
 import pe.edu.unfv.besttraveludemy.domain.repositories.HotelRepository;
 import pe.edu.unfv.besttraveludemy.domain.repositories.ReservationRepository;
 import pe.edu.unfv.besttraveludemy.infraestructure.abastract_services.IReservationService;
+import pe.edu.unfv.besttraveludemy.infraestructure.helper.CustomerHelper;
 
 @Transactional
 @Service
@@ -29,6 +30,7 @@ public class ReservationService implements IReservationService {
     private final ReservationRepository reservationRepository;
     private final CustomerRepository customerRepository;
     private final HotelRepository hotelRepository;
+    private final CustomerHelper customerHelper;
 
     @Override
     public ReservationResponse create(ReservationRequest request) {
@@ -48,6 +50,8 @@ public class ReservationService implements IReservationService {
                 .build();
 
         var reservationPersisted = reservationRepository.save(reservationToPersist);
+        
+        this.customerHelper.incrase(customer.getDni(), ReservationService.class);
         
         log.info("Reservation saved with id: {}", reservationPersisted.getId());
 
