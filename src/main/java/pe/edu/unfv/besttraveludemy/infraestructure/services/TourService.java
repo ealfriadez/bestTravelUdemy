@@ -96,14 +96,18 @@ public class TourService implements ITourService{
 
 	@Override
 	public void removeReservation(Long tourId, UUID reservationId) {
-		// TODO Auto-generated method stub
-		
+		var tourUpdate = this.tourRepository.findById(tourId).orElseThrow();
+		tourUpdate.removeReservation(reservationId);
+		this.tourRepository.save(tourUpdate);
 	}
 
 	@Override
-	public UUID addReservation(Long reservationId, Long tourId) {
-		// TODO Auto-generated method stub
-		return null;
+	public UUID addReservation(Long hotelId, Long tourId, Integer totalDays) {
+		var tourUpdate = this.tourRepository.findById(tourId).orElseThrow();
+		var hotel = this.hotelRepository.findById(hotelId).orElseThrow();
+		var reservation = this.tourHelper.createReservation(hotel, tourUpdate.getCustomer(), totalDays);
+		tourUpdate.addReservation(reservation);
+		this.tourRepository.save(tourUpdate);
+		return reservation.getId();
 	}
-
 }
