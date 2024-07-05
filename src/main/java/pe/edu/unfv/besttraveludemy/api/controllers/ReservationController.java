@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import pe.edu.unfv.besttraveludemy.api.models.request.ReservationRequest;
 import pe.edu.unfv.besttraveludemy.api.models.response.ReservationResponse;
@@ -34,12 +35,13 @@ public class ReservationController {
     }
     
     @PostMapping
-    public ResponseEntity<ReservationResponse> post(@RequestBody ReservationRequest request){
+    public ResponseEntity<ReservationResponse> post(@Valid @RequestBody ReservationRequest request){
         return ResponseEntity.ok(reservationService.create(request));
     }
     
     @PutMapping(path = "{id}")
 	public ResponseEntity<ReservationResponse> put(
+			@Valid 
 			@PathVariable UUID id,
 			@RequestBody ReservationRequest request){
 	
