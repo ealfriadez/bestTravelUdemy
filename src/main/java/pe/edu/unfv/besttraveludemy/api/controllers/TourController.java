@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import pe.edu.unfv.besttraveludemy.api.models.request.TourRequest;
 import pe.edu.unfv.besttraveludemy.api.models.response.TourResponse;
@@ -20,7 +21,7 @@ public class TourController {
     private final ITourService iTourService;
 
     @PostMapping
-    public ResponseEntity<TourResponse> post(@RequestBody TourRequest request){
+    public ResponseEntity<TourResponse> post(@Valid @RequestBody TourRequest request){
         return ResponseEntity.ok(this.iTourService.create(request));
     }
 

@@ -33,6 +33,6 @@ public class ReservationRequest implements Serializable{/**
 	@Max(value = 30, message = "Max 30 days to make reservation")
 	@NotNull(message = "Total days is mandatory")
 	private Integer totalDays;
-	@Email
+	@Email(message = "Invalid email")
 	private String email;
 }

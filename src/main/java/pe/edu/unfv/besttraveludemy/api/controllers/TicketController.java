@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import pe.edu.unfv.besttraveludemy.api.models.request.TicketRequest;
 import pe.edu.unfv.besttraveludemy.api.models.response.TicketResponse;
@@ -26,13 +27,14 @@ public class TicketController {
 	}
 
 	@PostMapping
-	public ResponseEntity<TicketResponse> post(@RequestBody TicketRequest request){
+	public ResponseEntity<TicketResponse> post(@Valid @RequestBody TicketRequest request){
 		
 		return ResponseEntity.ok(ticketService.create(request));
 	}
 	
 	@PutMapping(path = "{id}")
 	public ResponseEntity<TicketResponse> put(
+			@Valid
 			@PathVariable UUID id,
 			@RequestBody TicketRequest request){
 	
