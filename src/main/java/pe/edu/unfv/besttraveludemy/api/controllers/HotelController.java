@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import pe.edu.unfv.besttraveludemy.api.models.response.HotelResponse;
 import pe.edu.unfv.besttraveludemy.infraestructure.abastract_services.IHotelService;
@@ -20,6 +21,7 @@ import pe.edu.unfv.besttraveludemy.util.SortType;
 @RestController
 @RequestMapping(path = "hotel")
 @AllArgsConstructor
+@Tag(name = "Hotel")
 public class HotelController {
 
 	private final IHotelService iHotelService;

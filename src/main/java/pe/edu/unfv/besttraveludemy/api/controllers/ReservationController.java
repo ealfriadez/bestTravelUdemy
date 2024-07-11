@@ -16,15 +16,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import pe.edu.unfv.besttraveludemy.api.models.request.ReservationRequest;
+import pe.edu.unfv.besttraveludemy.api.models.response.ErrorResponse;
 import pe.edu.unfv.besttraveludemy.api.models.response.ReservationResponse;
 import pe.edu.unfv.besttraveludemy.infraestructure.abastract_services.IReservationService;
 
 @RestController
 @RequestMapping(path = "reservation")
 @AllArgsConstructor
+@Tag(name = "Reservation")
 public class ReservationController {
 
     private final IReservationService reservationService;
@@ -34,6 +40,13 @@ public class ReservationController {
     	return ResponseEntity.ok(reservationService.read(id));
     }
     
+    @ApiResponse(
+    		responseCode = "400", 
+    		description = "When the request have a field invalid we response this",
+    		content = {
+    				@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+    		}
+    	)
     @PostMapping
     public ResponseEntity<ReservationResponse> post(@Valid @RequestBody ReservationRequest request){
         return ResponseEntity.ok(reservationService.create(request));
