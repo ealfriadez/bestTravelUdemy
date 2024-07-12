@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Currency;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
@@ -23,6 +24,7 @@ import pe.edu.unfv.besttraveludemy.infraestructure.abastract_services.IReservati
 import pe.edu.unfv.besttraveludemy.infraestructure.helper.ApiCurrencyConnectorHelper;
 import pe.edu.unfv.besttraveludemy.infraestructure.helper.BlackListHelper;
 import pe.edu.unfv.besttraveludemy.infraestructure.helper.CustomerHelper;
+import pe.edu.unfv.besttraveludemy.infraestructure.helper.EmailHelper;
 import pe.edu.unfv.besttraveludemy.util.enums.Tables;
 import pe.edu.unfv.besttraveludemy.util.exceptions.IdNotFoundException;
 
@@ -38,6 +40,7 @@ public class ReservationService implements IReservationService {
     private final CustomerHelper customerHelper;
     private final BlackListHelper blackListHelper;
     private final ApiCurrencyConnectorHelper currencyConnectorHelper;
+    private final EmailHelper emailHelper;
 
     @Override
     public ReservationResponse create(ReservationRequest request) {
@@ -58,10 +61,12 @@ public class ReservationService implements IReservationService {
 
         var reservationPersisted = reservationRepository.save(reservationToPersist);
         
-        this.customerHelper.incrase(customer.getDni(), ReservationService.class);
+        this.customerHelper.incrase(customer.getDni(), ReservationService.class);       
         
-        log.info("Reservation saved with id: {}", reservationPersisted.getId());
+        if (Objects.nonNull(request.getEmail())) this.emailHelper.sendMail(request.getEmail(), customer.getFullName(), Tables.reservation.name());
 
+        log.info("Reservation saved with id: {}", reservationPersisted.getId());
+        
         return this.entityToResponse(reservationPersisted);
     }
 

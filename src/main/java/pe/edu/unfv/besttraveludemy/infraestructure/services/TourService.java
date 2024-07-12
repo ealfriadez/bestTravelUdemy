@@ -2,6 +2,7 @@ package pe.edu.unfv.besttraveludemy.infraestructure.services;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,7 @@ import pe.edu.unfv.besttraveludemy.domain.repositories.TourRepository;
 import pe.edu.unfv.besttraveludemy.infraestructure.abastract_services.ITourService;
 import pe.edu.unfv.besttraveludemy.infraestructure.helper.BlackListHelper;
 import pe.edu.unfv.besttraveludemy.infraestructure.helper.CustomerHelper;
+import pe.edu.unfv.besttraveludemy.infraestructure.helper.EmailHelper;
 import pe.edu.unfv.besttraveludemy.infraestructure.helper.TourHelper;
 import pe.edu.unfv.besttraveludemy.util.enums.Tables;
 import pe.edu.unfv.besttraveludemy.util.exceptions.IdNotFoundException;
@@ -41,6 +43,7 @@ public class TourService implements ITourService{
 	private final TourHelper tourHelper;
 	private final CustomerHelper customerHelper;
 	private final BlackListHelper blackListHelper;
+	private final EmailHelper emailHelper;
 	
 	@Override
 	public TourResponse create(TourRequest request) {
@@ -60,6 +63,8 @@ public class TourService implements ITourService{
 		var tourSaved = this.tourRepository.save(tourToSave);
 		
 		this.customerHelper.incrase(customer.getDni(), TourService.class);
+		
+		if (Objects.nonNull(request.getEmail())) this.emailHelper.sendMail(request.getEmail(), customer.getFullName(), Tables.tour.name());
 		
 		log.info("Tour saved with id: {}", tourSaved.getId());
 		

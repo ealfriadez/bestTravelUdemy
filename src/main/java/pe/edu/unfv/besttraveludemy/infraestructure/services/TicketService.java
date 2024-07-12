@@ -2,6 +2,7 @@ package pe.edu.unfv.besttraveludemy.infraestructure.services;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
@@ -20,6 +21,7 @@ import pe.edu.unfv.besttraveludemy.domain.repositories.TicketRepository;
 import pe.edu.unfv.besttraveludemy.infraestructure.abastract_services.ITicketService;
 import pe.edu.unfv.besttraveludemy.infraestructure.helper.BlackListHelper;
 import pe.edu.unfv.besttraveludemy.infraestructure.helper.CustomerHelper;
+import pe.edu.unfv.besttraveludemy.infraestructure.helper.EmailHelper;
 import pe.edu.unfv.besttraveludemy.util.BestTravelUtil;
 import pe.edu.unfv.besttraveludemy.util.enums.Tables;
 import pe.edu.unfv.besttraveludemy.util.exceptions.IdNotFoundException;
@@ -35,6 +37,7 @@ public class TicketService implements ITicketService{
 	private final TicketRepository ticketRepository;
 	private final CustomerHelper customerHelper;
 	private final BlackListHelper blackListHelper;
+	private final EmailHelper emailHelper;
 
 	@Override
 	public TicketResponse create(TicketRequest request) {
@@ -55,6 +58,8 @@ public class TicketService implements ITicketService{
 		var ticketPersisted = this.ticketRepository.save(ticketToPersist);
 		
 		this.customerHelper.incrase(customer.getDni(), TicketService.class);
+		
+		if (Objects.nonNull(request.getEmail())) this.emailHelper.sendMail(request.getEmail(), customer.getFullName(), Tables.ticket.name());
 		
 		log.info("Ticket saved with id: {}", ticketPersisted.getId());
 		
