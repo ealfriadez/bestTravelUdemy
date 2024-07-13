@@ -48,7 +48,10 @@ public class RedisConfig {
 							CacheConstants.FLY_CACHE_NAME, new CacheConfig(),
 							CacheConstants.HOTEL_CACHE_NAME, new CacheConfig()
 						);
-				return new RedissonSpringCacheManager(redissonClient, String.valueOf(configs));
+		
+		log.info("CacheManager: {}", configs.toString());
+		
+		return new RedissonSpringCacheManager(redissonClient, String.valueOf(configs));
 	}
 	
 	//Añadir esta clase de constantes al proyecto
