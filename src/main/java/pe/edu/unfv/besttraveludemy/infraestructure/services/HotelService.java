@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -17,6 +18,7 @@ import pe.edu.unfv.besttraveludemy.api.models.response.HotelResponse;
 import pe.edu.unfv.besttraveludemy.domain.entities.HotelEntity;
 import pe.edu.unfv.besttraveludemy.domain.repositories.HotelRepository;
 import pe.edu.unfv.besttraveludemy.infraestructure.abastract_services.IHotelService;
+import pe.edu.unfv.besttraveludemy.util.CacheConstants;
 import pe.edu.unfv.besttraveludemy.util.SortType;
 
 @Transactional(readOnly = true)
@@ -28,7 +30,8 @@ public class HotelService implements IHotelService{
 	private final HotelRepository hotelRepository;
 	
 	@Override
-	public Page<HotelResponse> realAll(Integer page, Integer size, SortType sortType) {
+	@Cacheable(value = CacheConstants.HOTEL_CACHE_NAME)
+	public Page<HotelResponse> readAll(Integer page, Integer size, SortType sortType) {		
 		PageRequest pageRequest = null;
 		switch (sortType) {
 		case NONE  -> pageRequest = PageRequest.of(page, size);
@@ -42,7 +45,8 @@ public class HotelService implements IHotelService{
 	}
 
 	@Override
-	public Set<HotelResponse> readLessPrice(BigDecimal price) {
+	@Cacheable(value = CacheConstants.HOTEL_CACHE_NAME)
+	public Set<HotelResponse> readLessPrice(BigDecimal price) {		
 		return this.hotelRepository.findByPriceLessThan(price)
 				.stream()
 				.map(this::entityToResponse)
@@ -50,7 +54,8 @@ public class HotelService implements IHotelService{
 	}
 
 	@Override
-	public Set<HotelResponse> readBetweenPrice(BigDecimal min, BigDecimal max) {
+	@Cacheable(value = CacheConstants.HOTEL_CACHE_NAME)
+	public Set<HotelResponse> readBetweenPrice(BigDecimal min, BigDecimal max) {		
 		return this.hotelRepository.findByPriceIsBetween(min, max)
 				.stream()
 				.map(this::entityToResponse)
@@ -58,14 +63,15 @@ public class HotelService implements IHotelService{
 	}
 
 	@Override
-	public Set<HotelResponse> readByRating(Integer rating) {
+	@Cacheable(value = CacheConstants.HOTEL_CACHE_NAME)
+	public Set<HotelResponse> readByRating(Integer rating) {		
 		return this.hotelRepository.findByRatingGreaterThan(rating)
 				.stream()
 				.map(this::entityToResponse)
 				.collect(Collectors.toSet());
 	}
 	
-private HotelResponse entityToResponse(HotelEntity entity) {		
+private HotelResponse entityToResponse(HotelEntity entity) {			
 		var response = new HotelResponse();
 		BeanUtils.copyProperties(entity, response);		
 		return response;

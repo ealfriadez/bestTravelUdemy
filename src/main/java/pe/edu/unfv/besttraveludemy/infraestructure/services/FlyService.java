@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -17,6 +18,7 @@ import pe.edu.unfv.besttraveludemy.api.models.response.FlyResponse;
 import pe.edu.unfv.besttraveludemy.domain.entities.FlyEntity;
 import pe.edu.unfv.besttraveludemy.domain.repositories.FlyRepository;
 import pe.edu.unfv.besttraveludemy.infraestructure.abastract_services.IFlyService;
+import pe.edu.unfv.besttraveludemy.util.CacheConstants;
 import pe.edu.unfv.besttraveludemy.util.SortType;
 
 @Transactional(readOnly = true)
@@ -28,8 +30,8 @@ public class FlyService implements IFlyService{
 	private final FlyRepository flyRepository;
 	
 	@Override
-	public Page<FlyResponse> realAll(Integer page, Integer size, SortType sortType) {
-
+	@Cacheable(value = CacheConstants.FLY_CACHE_NAME)
+	public Page<FlyResponse> readAll(Integer page, Integer size, SortType sortType) {		
 		PageRequest pageRequest = null;
 		switch (sortType) {
 		case NONE  -> pageRequest = PageRequest.of(page, size);
@@ -43,8 +45,8 @@ public class FlyService implements IFlyService{
 	}
 
 	@Override
-	public Set<FlyResponse> readLessPrice(BigDecimal price) {
-				
+	@Cacheable(value = CacheConstants.FLY_CACHE_NAME)
+	public Set<FlyResponse> readLessPrice(BigDecimal price) {		
 		return this.flyRepository.selectLessPrice(price)
 				.stream()
 				.map(this::entityToResponse)
@@ -52,8 +54,8 @@ public class FlyService implements IFlyService{
 	}
 
 	@Override
-	public Set<FlyResponse> readBetweenPrice(BigDecimal min, BigDecimal max) {
-		
+	@Cacheable(value = CacheConstants.FLY_CACHE_NAME)
+	public Set<FlyResponse> readBetweenPrice(BigDecimal min, BigDecimal max) {		
 		return this.flyRepository.selectBetweenPrice(min, max)
 				.stream()
 				.map(this::entityToResponse)
@@ -61,8 +63,8 @@ public class FlyService implements IFlyService{
 	}
 
 	@Override
-	public Set<FlyResponse> readByOriginDestiny(String origen, String destiny) {
-		
+	@Cacheable(value = CacheConstants.FLY_CACHE_NAME)
+	public Set<FlyResponse> readByOriginDestiny(String origen, String destiny) {		
 		return this.flyRepository.selectOrigindestiny(origen, destiny)
 				.stream()
 				.map(this::entityToResponse)

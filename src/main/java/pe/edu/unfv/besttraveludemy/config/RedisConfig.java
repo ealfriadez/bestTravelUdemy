@@ -10,14 +10,20 @@ import org.redisson.spring.cache.RedissonSpringCacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import lombok.extern.slf4j.Slf4j;
+import pe.edu.unfv.besttraveludemy.util.CacheConstants;
 
 @Configuration
 @EnableCaching
+@EnableScheduling
 @Slf4j
 public class RedisConfig {
 
@@ -32,8 +38,9 @@ public class RedisConfig {
 	@Bean
 	public RedissonClient redissonClient() {
 		var config = new Config();
-		config.useSingleServer().setAddress(serverAddress).setPassword(serverPassword);
-
+		config.useSingleServer()
+			.setAddress(serverAddress)
+			.setPassword(serverPassword);
 		return Redisson.create(config);
 	}
 
@@ -51,13 +58,16 @@ public class RedisConfig {
 		
 		log.info("CacheManager: {}", configs.toString());
 		
-		return new RedissonSpringCacheManager(redissonClient, String.valueOf(configs));
-	}
+		return new RedissonSpringCacheManager(redissonClient, configs);
+	}	
 	
-	//Añadir esta clase de constantes al proyecto
-	public class CacheConstants {
-	public static final String FLY_CACHE_NAME = "flights"; //cache name for flights
-	public static final String HOTEL_CACHE_NAME = "hotels"; // cache name for hotels
-	public static final String SCHEDULED_RESET_CACHE = "0 0 0 * * ?"; //cron expresion every day at 12AM
+	@CacheEvict(cacheNames = {
+		CacheConstants.FLY_CACHE_NAME,
+		CacheConstants.HOTEL_CACHE_NAME
+	}, allEntries = true)
+	@Scheduled(cron = "0 * * * * *")
+	@Async
+	public void deleteCache() {		
+		log.info(CacheConstants.CLEAN_CACHE);
 	}
 }

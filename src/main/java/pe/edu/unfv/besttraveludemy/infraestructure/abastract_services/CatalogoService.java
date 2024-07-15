@@ -9,7 +9,7 @@ import pe.edu.unfv.besttraveludemy.util.SortType;
 
 public interface CatalogoService<R> {
 
-	Page<R> realAll(Integer page, Integer size, SortType sortType);
+	Page<R> readAll(Integer page, Integer size, SortType sortType);
 	
 	Set<R> readLessPrice(BigDecimal price);
 	

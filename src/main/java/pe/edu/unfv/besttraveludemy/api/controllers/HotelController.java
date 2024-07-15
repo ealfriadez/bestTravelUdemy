@@ -32,7 +32,7 @@ public class HotelController {
 			@RequestParam Integer size,
 			@RequestHeader(required = false) SortType sortType){
 		if (Objects.isNull(sortType)) sortType = SortType.NONE;
-		var response = this.iHotelService.realAll(page, size, sortType);
+		var response = this.iHotelService.readAll(page, size, sortType);
 		return response.isEmpty()?ResponseEntity.noContent().build():ResponseEntity.ok(response);
 	}
 	
