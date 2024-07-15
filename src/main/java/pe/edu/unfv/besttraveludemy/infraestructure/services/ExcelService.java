@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import pe.edu.unfv.besttraveludemy.domain.entities.CustomerEntity;
-import pe.edu.unfv.besttraveludemy.domain.repositories.CustomerRepository;
+import pe.edu.unfv.besttraveludemy.domain.entities.jpa.CustomerEntity;
+import pe.edu.unfv.besttraveludemy.domain.repositories.jpa.CustomerRepository;
 import pe.edu.unfv.besttraveludemy.infraestructure.abastract_services.ReportService;
 
 @Service

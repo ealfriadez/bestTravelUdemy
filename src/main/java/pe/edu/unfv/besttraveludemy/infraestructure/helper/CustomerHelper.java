@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
-import pe.edu.unfv.besttraveludemy.domain.repositories.CustomerRepository;
+import pe.edu.unfv.besttraveludemy.domain.repositories.jpa.CustomerRepository;
 
 @Transactional
 @Component
