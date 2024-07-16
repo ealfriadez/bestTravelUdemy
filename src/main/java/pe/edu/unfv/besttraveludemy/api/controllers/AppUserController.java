@@ -1,6 +1,7 @@
 package pe.edu.unfv.besttraveludemy.api.controllers;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -25,5 +26,21 @@ public class AppUserController {
 	@PatchMapping(path = "enabled-or-disabled")
 	public ResponseEntity<Map<String, Boolean>> enabledOrDisabled(@RequestParam String username){
 		return ResponseEntity.ok(this.modifyUserService.enabled(username));
+	}
+	
+	@Operation(summary = "Add role user")
+	@PatchMapping(path = "add-role")
+	public ResponseEntity<Map<String, Set<String>>> addRole(
+				@RequestParam String username, 
+				@RequestParam String role){
+		return ResponseEntity.ok(this.modifyUserService.addRole(username, role));
+	}
+	
+	@Operation(summary = "Delete role user")
+	@PatchMapping(path = "remove-role")
+	public ResponseEntity<Map<String, Set<String>>> removeRole(
+				@RequestParam String username, 
+				@RequestParam String role){
+		return ResponseEntity.ok(this.modifyUserService.removeRole(username, role));
 	}
 }

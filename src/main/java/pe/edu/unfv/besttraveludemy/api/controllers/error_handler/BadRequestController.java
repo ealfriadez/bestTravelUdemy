@@ -12,6 +12,7 @@ import pe.edu.unfv.besttraveludemy.api.models.response.BaseErrorResponse;
 import pe.edu.unfv.besttraveludemy.api.models.response.ErrorResponse;
 import pe.edu.unfv.besttraveludemy.api.models.response.ErrorsResponse;
 import pe.edu.unfv.besttraveludemy.util.exceptions.IdNotFoundException;
+import pe.edu.unfv.besttraveludemy.util.exceptions.UsernameNotFoundException;
 
 //400, 401, 402 lado del cliente
 
@@ -19,8 +20,8 @@ import pe.edu.unfv.besttraveludemy.util.exceptions.IdNotFoundException;
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class BadRequestController {
 	
-	@ExceptionHandler(IdNotFoundException.class)
-	public BaseErrorResponse handleIdNotFound(IdNotFoundException exception) {
+	@ExceptionHandler({IdNotFoundException.class, UsernameNotFoundException.class})
+	public BaseErrorResponse handleIdNotFound(RuntimeException exception) {
 		return ErrorResponse.builder()
 				.message(exception.getMessage())
 				.status(HttpStatus.BAD_REQUEST.name())

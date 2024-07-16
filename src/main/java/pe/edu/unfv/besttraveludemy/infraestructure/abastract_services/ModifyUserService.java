@@ -1,11 +1,11 @@
 package pe.edu.unfv.besttraveludemy.infraestructure.abastract_services;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface ModifyUserService {
 
 	Map<String, Boolean> enabled(String username);
-	Map<String, List<String>> addRole(String username, String role);
-	Map<String, List<String>> removeRole(String username, String role);
+	Map<String, Set<String>> addRole(String username, String role);
+	Map<String, Set<String>> removeRole(String username, String role);
 }
