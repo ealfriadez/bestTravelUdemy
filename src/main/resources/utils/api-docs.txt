@@ -1,2 +1,4 @@
 http://localhost:7090/best_travel/v3/api-docs
 http://localhost:7090/best_travel/swagger-ui/index.html
+http://localhost:7090/best_travel/.well-known/oauth-authorization-server
+https://oauthdebugger.com/

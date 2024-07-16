@@ -3,11 +3,19 @@ package pe.edu.unfv.besttraveludemy.infraestructure.services;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import pe.edu.unfv.besttraveludemy.domain.entities.documents.AppUserDocument;
 import pe.edu.unfv.besttraveludemy.domain.repositories.mongo.AppUserRepository;
 import pe.edu.unfv.besttraveludemy.infraestructure.abastract_services.ModifyUserService;
 import pe.edu.unfv.besttraveludemy.util.exceptions.UsernameNotFoundException;
@@ -15,7 +23,8 @@ import pe.edu.unfv.besttraveludemy.util.exceptions.UsernameNotFoundException;
 @Service
 @Slf4j
 @AllArgsConstructor
-public class AppUserService implements ModifyUserService{
+@Transactional
+public class AppUserService implements ModifyUserService, UserDetailsService{
 
 	private final AppUserRepository appUserRepository;
 	
@@ -55,4 +64,29 @@ public class AppUserService implements ModifyUserService{
 	}
 
 	private static final String COLLECTION_NAME = "app_user";
+
+	@Transactional(readOnly = true)
+	@Override
+	public UserDetails loadUserByUsername(String username) {
+		var user = this.appUserRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(COLLECTION_NAME));
+		return mapUserToUserDetails(user);
+	}
+	
+	private static UserDetails mapUserToUserDetails(AppUserDocument user) {
+		Set<GrantedAuthority> authorities = user.getRole()
+				.getGrantedAuthorities()
+					.stream()
+						.map(SimpleGrantedAuthority::new)
+							.collect(Collectors.toSet());
+		
+		return new User(
+				user.getUsername(),
+				user.getPassword(),
+				user.isEnabled(),
+				true,
+				true,
+				true,
+				authorities				
+		);
+	}
 }

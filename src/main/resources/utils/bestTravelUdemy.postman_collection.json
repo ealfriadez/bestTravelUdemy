@@ -131,7 +131,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"idClient\": \"BBMB771012HMCRR022\",\n    \"idFly\": \"9\"\n}",
+							"raw": "{\n\t\"idClient\": \"WALA771012HCRGR054\",\n    \"idFly\": \"1\",\n    \"email\": \"ealfriadez@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -267,11 +267,29 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "currency",
+								"value": "PEN",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:7090/best_travel/reservation/a029e17f-3090-4514-ba28-69bb0d99c007",
+							"raw": "http://localhost:7090/best_travel/reservation?hotelId=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -279,8 +297,13 @@
 							"port": "7090",
 							"path": [
 								"best_travel",
-								"reservation",
-								"a029e17f-3090-4514-ba28-69bb0d99c007"
+								"reservation"
+							],
+							"query": [
+								{
+									"key": "hotelId",
+									"value": "1"
+								}
 							]
 						},
 						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
@@ -318,7 +341,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"idClient\": \"BBMB771012HMCRR0220000\",\n    \"idHotel\": \"-9\",\n    \"totalDays\": \"300\",\n    \"email\": \"eliogmail.com\"\n}",
+							"raw": "{\n\t\"idClient\": \"WALA771012HCRGR054\",\n    \"idHotel\": \"10\",\n    \"totalDays\": \"30\",\n    \"email\": \"ealfriadez@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -505,7 +528,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"customerId\": \"VIKI771012HMCRG093\",\n    \"flights\": [\n        {\"id\": \"1\"},\n        {\"id\": \"2\"},\n        {\"id\": \"3\"},\n        {\"id\": \"4\"},\n        {\"id\": \"5\"}\n    ],\n    \"hotels\": [\n        {\"id\": \"1\", \"totalDays\": \"2\"},\n        {\"id\": \"10\", \"totalDays\": \"4\"},\n        {\"id\": \"15\", \"totalDays\": \"5\"}\n    ]\n}",
+							"raw": "{\n\t\"customerId\": \"WALA771012HCRGR054\",\n    \"flights\": [\n        {\"id\": \"1\"},\n        {\"id\": \"2\"},\n        {\"id\": \"3\"},\n        {\"id\": \"4\"},\n        {\"id\": \"5\"}\n    ],\n    \"hotels\": [\n        {\"id\": \"1\", \"totalDays\": \"2\"},\n        {\"id\": \"10\", \"totalDays\": \"4\"},\n        {\"id\": \"15\", \"totalDays\": \"5\"}\n    ],\n    \"email\": \"ealfriadez@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1128,7 +1151,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7090/best_travel/hotel/origin_destiny?origin=Iceland&destiny=Gracia",
+							"raw": "http://localhost:7090/best_travel/hotel/rating?rating=2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1137,16 +1160,12 @@
 							"path": [
 								"best_travel",
 								"hotel",
-								"origin_destiny"
+								"rating"
 							],
 							"query": [
 								{
-									"key": "origin",
-									"value": "Iceland"
-								},
-								{
-									"key": "destiny",
-									"value": "Gracia"
+									"key": "rating",
+									"value": "2"
 								}
 							]
 						},
@@ -1180,7 +1199,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:7090/best_travel/hotel?page=4&size=3",
+							"raw": "http://localhost:7090/best_travel/hotel?page=1&size=3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1193,7 +1212,7 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "4"
+									"value": "1"
 								},
 								{
 									"key": "size",
@@ -1232,6 +1251,46 @@
 					"response": []
 				},
 				{
+					"name": "OAUTH",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7090/best_travel/.well-known/oauth-authorization-server",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7090",
+							"path": [
+								"best_travel",
+								".well-known",
+								"oauth-authorization-server"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PRUEBAS - OAUTH 2.0",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://oauthdebugger.com/",
+							"protocol": "https",
+							"host": [
+								"oauthdebugger",
+								"com"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Swagger-UI",
 					"request": {
 						"method": "GET",
@@ -1247,6 +1306,598 @@
 								"best_travel",
 								"swagger-ui",
 								"index.html"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Exchange Rates Data API",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "https://api.apilayer.com/exchangerates_data/live?base=USD&symbols=EUR,GBP",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "53YptECouCdT0hh47FlX2X5AiAZAKrSZ"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "https://api.apilayer.com/exchangerates_data/live",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.apilayer.com/exchangerates_data/live?base=USD&symbols=EUR",
+							"protocol": "https",
+							"host": [
+								"api",
+								"apilayer",
+								"com"
+							],
+							"path": [
+								"exchangerates_data",
+								"live"
+							],
+							"query": [
+								{
+									"key": "base",
+									"value": "USD"
+								},
+								{
+									"key": "symbols",
+									"value": "EUR"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "https://api.apilayer.com/exchangerates_data/latest?symbols=PEN&base=USD,MXN,COP",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "53YptECouCdT0hh47FlX2X5AiAZAKrSZ"
+							}
+						],
+						"url": {
+							"raw": "https://api.apilayer.com/fixer/latest?symbols=PEN&base=USD,MXN,COP",
+							"protocol": "https",
+							"host": [
+								"api",
+								"apilayer",
+								"com"
+							],
+							"path": [
+								"fixer",
+								"latest"
+							],
+							"query": [
+								{
+									"key": "symbols",
+									"value": "PEN"
+								},
+								{
+									"key": "base",
+									"value": "USD,MXN,COP"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "https://api.apilayer.com/exchangerates_data/live?base=USD&symbols=EUR,GBP",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "53YptECouCdT0hh47FlX2X5AiAZAKrSZ"
+							}
+						],
+						"url": {
+							"raw": "https://api.apilayer.com/exchangerates_data/live?base=USD&symbols=EUR,GBP",
+							"protocol": "https",
+							"host": [
+								"api",
+								"apilayer",
+								"com"
+							],
+							"path": [
+								"exchangerates_data",
+								"live"
+							],
+							"query": [
+								{
+									"key": "base",
+									"value": "USD"
+								},
+								{
+									"key": "symbols",
+									"value": "EUR,GBP"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "https://api.apilayer.com/fixer/latest?symbols=PEN&base=USD",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "53YptECouCdT0hh47FlX2X5AiAZAKrSZ"
+							}
+						],
+						"url": {
+							"raw": "https://api.apilayer.com/fixer/latest?symbols=PEN&base=USD",
+							"protocol": "https",
+							"host": [
+								"api",
+								"apilayer",
+								"com"
+							],
+							"path": [
+								"fixer",
+								"latest"
+							],
+							"query": [
+								{
+									"key": "symbols",
+									"value": "PEN"
+								},
+								{
+									"key": "base",
+									"value": "USD"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Report",
+			"item": [
+				{
+					"name": "Excell",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7090/best_travel/report",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7090",
+							"path": [
+								"best_travel",
+								"report"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "RENDER",
+			"item": [
+				{
+					"name": "Get hotel-getAll",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "sortType",
+								"value": "UPPER",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://besttraveludemy.onrender.com/best_travel/hotel?page=4&size=3",
+							"protocol": "https",
+							"host": [
+								"besttraveludemy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"best_travel",
+								"hotel"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "4"
+								},
+								{
+									"key": "size",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save reservation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);",
+									"pm.collectionVariables.set(\"id_reservation\", response.id);",
+									"console.log(pm.collectionVariables.get(\"id_reservation\"));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"idClient\": \"WALA771012HCRGR054\",\n    \"idHotel\": \"10\",\n    \"totalDays\": \"30\",\n    \"email\": \"ealfriadez@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://besttraveludemy.onrender.com/best_travel/reservation",
+							"protocol": "https",
+							"host": [
+								"besttraveludemy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"best_travel",
+								"reservation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get hotel-rating",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://besttraveludemy.onrender.com/best_travel/hotel/origin_destiny?origin=Iceland&destiny=Gracia",
+							"protocol": "https",
+							"host": [
+								"besttraveludemy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"best_travel",
+								"hotel",
+								"origin_destiny"
+							],
+							"query": [
+								{
+									"key": "origin",
+									"value": "Iceland"
+								},
+								{
+									"key": "destiny",
+									"value": "Gracia"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get hotel-between_price",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://besttraveludemy.onrender.com/best_travel/hotel/between?min=20.00&max=50.00",
+							"protocol": "https",
+							"host": [
+								"besttraveludemy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"best_travel",
+								"hotel",
+								"between"
+							],
+							"query": [
+								{
+									"key": "min",
+									"value": "20.00"
+								},
+								{
+									"key": "max",
+									"value": "50.00"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get hotel-less_price",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://besttraveludemy.onrender.com/best_travel/hotel/less_price?price=100.00",
+							"protocol": "https",
+							"host": [
+								"besttraveludemy",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"best_travel",
+								"hotel",
+								"less_price"
+							],
+							"query": [
+								{
+									"key": "price",
+									"value": "100.00"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mongo DB",
+			"item": [
+				{
+					"name": "Enable or disable user role",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "sortType",
+								"value": "UPPER",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:7090/best_travel/user/enabled-or-disabled?username=misterX",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7090",
+							"path": [
+								"best_travel",
+								"user",
+								"enabled-or-disabled"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "misterX"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add user role",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "sortType",
+								"value": "UPPER",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:7090/best_travel/user/add-role?username=heisenberg&role=ROLE_ADMIN",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7090",
+							"path": [
+								"best_travel",
+								"user",
+								"add-role"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "heisenberg"
+								},
+								{
+									"key": "role",
+									"value": "ROLE_ADMIN"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove user role",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "sortType",
+								"value": "UPPER",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:7090/best_travel/user/remove-role?username=heisenberg&role=ROLE_ADMIN",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7090",
+							"path": [
+								"best_travel",
+								"user",
+								"remove-role"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "heisenberg"
+								},
+								{
+									"key": "role",
+									"value": "ROLE_ADMIN"
+								}
 							]
 						}
 					},
