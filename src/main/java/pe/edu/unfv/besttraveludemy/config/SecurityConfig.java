@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -63,18 +64,7 @@ public class SecurityConfig {
 
 	public SecurityConfig(@Qualifier(value = "appUserService") UserDetailsService userDetailsService) {
 		this.userDetailsService = userDetailsService;
-	}
-
-	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-
-		http.getConfigurer(OAuth2AuthorizationServerConfigurer.class).oidc(Customizer.withDefaults());
-
-		http.exceptionHandling(e -> e.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(LOGIN_RESOURCE)));
-
-		return http.build();
-	}
+	}	
 
 	@Bean
 	AuthenticationProvider authenticationProvider(BCryptPasswordEncoder encoder) {
@@ -101,7 +91,20 @@ public class SecurityConfig {
 		return new InMemoryRegisteredClientRepository(registeredClient);
 	}
 	
-	@Bean 
+	@Bean
+	@Order(1)
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+
+		http.getConfigurer(OAuth2AuthorizationServerConfigurer.class).oidc(Customizer.withDefaults());
+
+		http.exceptionHandling(e -> e.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(LOGIN_RESOURCE)));
+
+		return http.build();
+	}
+	
+	@Bean
+	@Order(2)
 	SecurityFilterChain appSecurityFilterChain(HttpSecurity http) throws Exception{
 		http
 			.formLogin()
@@ -110,12 +113,27 @@ public class SecurityConfig {
 			.requestMatchers(PUBLIC_RESOURCES)
 			.permitAll()
 			.requestMatchers(USER_RESOURCES)
-			.authenticated()
+			.hasAuthority(AUTH_READ)
 			.requestMatchers(ADMIN_RESOURCES)
-			.hasAuthority(ROLE)
+			.hasAuthority(AUTH_WRITE)
 			.and()
 			.oauth2ResourceServer()
 			.jwt();		
+		
+		return http.build();		
+	}
+	
+	@Bean 
+	@Order(3)
+	SecurityFilterChain userSecurityFilterChain(HttpSecurity http) throws Exception{
+		http			
+			.authorizeHttpRequests()
+			.requestMatchers(PUBLIC_RESOURCES)
+			.permitAll()
+			.requestMatchers(USER_RESOURCES)
+			.hasRole(ROLE_USER)
+			.requestMatchers(ADMIN_RESOURCES)
+			.hasRole(ROLE_ADMIN);
 		
 		return http.build();		
 	}
@@ -201,6 +219,9 @@ public class SecurityConfig {
 	private static final String[] USER_RESOURCES = { "/tour/**", "/ticket/**", "/reservation/**" };
 	private static final String[] ADMIN_RESOURCES = { "/user/**", "/report/**" };
 	private static final String LOGIN_RESOURCE = "/login";
-	private static final String ROLE = "write";
+	private static final String AUTH_WRITE = "write";
+	private static final String AUTH_READ = "read";
+	private static final String ROLE_ADMIN = "ADMIN";
+	private static final String ROLE_USER= "USER";
 	private static final String APPLICATION_OWNER = "elio@net";
 }
