@@ -6,6 +6,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -109,7 +112,7 @@ public class SecurityConfig {
 			.requestMatchers(USER_RESOURCES)
 			.authenticated()
 			.requestMatchers(ADMIN_RESOURCES)
-			.hasRole(ROLE)
+			.hasAuthority(ROLE)
 			.and()
 			.oauth2ResourceServer()
 			.jwt();		
@@ -163,10 +166,15 @@ public class SecurityConfig {
 	@Bean
 	OAuth2TokenCustomizer<JwtEncodingContext> oAuth2TokenCustomizer(){
 		return context -> {
-			if (condition) {
-				
+			if (context.getTokenType().equals(OAuth2TokenType.ACCESS_TOKEN)) {
+				context.getClaims().claims(claim -> {
+					claim.putAll(Map.of(
+							"owner", APPLICATION_OWNER,
+							"date_request", LocalDateTime.now().toString()
+							));
+				});
 			}
-		}
+		};
 	}
 	
 	private static KeyPair generateRSA() {
@@ -194,4 +202,5 @@ public class SecurityConfig {
 	private static final String[] ADMIN_RESOURCES = { "/user/**", "/report/**" };
 	private static final String LOGIN_RESOURCE = "/login";
 	private static final String ROLE = "write";
+	private static final String APPLICATION_OWNER = "elio@net";
 }
