@@ -1,4 +1,4 @@
-package pe.edu.unfv.besttraveludemy.util;
+package pe.edu.unfv.besttraveludemy.util.constants;
 
 public class CacheConstants {
 

@@ -2,7 +2,7 @@ package pe.edu.unfv.besttraveludemy.domain.entities.jpa;
 
 import jakarta.persistence.*;
 import lombok.*;
-import pe.edu.unfv.besttraveludemy.util.AeroLine;
+import pe.edu.unfv.besttraveludemy.util.constants.AeroLine;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

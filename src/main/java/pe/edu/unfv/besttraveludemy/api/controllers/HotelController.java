@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import pe.edu.unfv.besttraveludemy.api.models.response.HotelResponse;
 import pe.edu.unfv.besttraveludemy.infraestructure.abastract_services.IHotelService;
-import pe.edu.unfv.besttraveludemy.util.SortType;
+import pe.edu.unfv.besttraveludemy.util.anotations.Notify;
+import pe.edu.unfv.besttraveludemy.util.constants.SortType;
 
 @RestController
 @RequestMapping(path = "hotel")
@@ -26,7 +28,9 @@ public class HotelController {
 
 	private final IHotelService iHotelService;
 	
+	@Operation(summary = "Return a page with hotel can be sorted or not")
 	@GetMapping
+	@Notify(value = "GET hotel")
 	public ResponseEntity<Page<HotelResponse>> getAll(
 			@RequestParam Integer page,
 			@RequestParam Integer size,
@@ -36,6 +40,7 @@ public class HotelController {
 		return response.isEmpty()?ResponseEntity.noContent().build():ResponseEntity.ok(response);
 	}
 	
+	@Operation(summary = "Return all hotels with prices less")
 	@GetMapping("less_price")
 	public ResponseEntity<Set<HotelResponse>> getLessPrice(
 			@RequestParam BigDecimal price){		
@@ -43,6 +48,7 @@ public class HotelController {
 		return response.isEmpty()?ResponseEntity.noContent().build():ResponseEntity.ok(response);
 	}
 	
+	@Operation(summary = "Return all hotels between price min and max")
 	@GetMapping("between")
 	public ResponseEntity<Set<HotelResponse>> getBetweenPrice(
 			@RequestParam BigDecimal min,
@@ -51,6 +57,7 @@ public class HotelController {
 		return response.isEmpty()?ResponseEntity.noContent().build():ResponseEntity.ok(response);
 	}
 	
+	@Operation(summary = "Return all hotels by rating")
 	@GetMapping("rating")
 	public ResponseEntity<Set<HotelResponse>> getByRating(
 			@RequestParam Integer rating){	

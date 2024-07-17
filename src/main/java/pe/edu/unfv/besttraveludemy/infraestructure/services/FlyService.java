@@ -18,8 +18,8 @@ import pe.edu.unfv.besttraveludemy.api.models.response.FlyResponse;
 import pe.edu.unfv.besttraveludemy.domain.entities.jpa.FlyEntity;
 import pe.edu.unfv.besttraveludemy.domain.repositories.jpa.FlyRepository;
 import pe.edu.unfv.besttraveludemy.infraestructure.abastract_services.IFlyService;
-import pe.edu.unfv.besttraveludemy.util.CacheConstants;
-import pe.edu.unfv.besttraveludemy.util.SortType;
+import pe.edu.unfv.besttraveludemy.util.constants.CacheConstants;
+import pe.edu.unfv.besttraveludemy.util.constants.SortType;
 
 @Transactional(readOnly = true)
 @Service

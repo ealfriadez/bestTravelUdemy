@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.springframework.data.domain.Page;
 
-import pe.edu.unfv.besttraveludemy.util.SortType;
+import pe.edu.unfv.besttraveludemy.util.constants.SortType;
 
 public interface CatalogoService<R> {
 

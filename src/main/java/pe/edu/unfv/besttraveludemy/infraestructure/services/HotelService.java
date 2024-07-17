@@ -18,8 +18,8 @@ import pe.edu.unfv.besttraveludemy.api.models.response.HotelResponse;
 import pe.edu.unfv.besttraveludemy.domain.entities.jpa.HotelEntity;
 import pe.edu.unfv.besttraveludemy.domain.repositories.jpa.HotelRepository;
 import pe.edu.unfv.besttraveludemy.infraestructure.abastract_services.IHotelService;
-import pe.edu.unfv.besttraveludemy.util.CacheConstants;
-import pe.edu.unfv.besttraveludemy.util.SortType;
+import pe.edu.unfv.besttraveludemy.util.constants.CacheConstants;
+import pe.edu.unfv.besttraveludemy.util.constants.SortType;
 
 @Transactional(readOnly = true)
 @Service

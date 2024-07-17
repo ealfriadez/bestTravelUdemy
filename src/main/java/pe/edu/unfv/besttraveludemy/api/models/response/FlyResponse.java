@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pe.edu.unfv.besttraveludemy.util.AeroLine;
+import pe.edu.unfv.besttraveludemy.util.constants.AeroLine;
 
 @NoArgsConstructor
 @AllArgsConstructor
